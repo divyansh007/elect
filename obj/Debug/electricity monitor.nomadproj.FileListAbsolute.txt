@@ -1,0 +1,1 @@
+c:\users\divyansh\documents\visual studio 2013\Projects\electricity monitor\electricity monitor\obj\Debug\electricity monitor.nomadprojResolveAssemblyReference.cache

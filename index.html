@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <script src="scripts/jquery-1.6.4.js" type="text/javascript"></script>
+    <script src="scripts/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>
+    <script src="cordova.js" type="text/javascript"></script>
+    <link rel="Stylesheet" href="style/jquery.mobile-1.2.0.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+        <div data-role="page" id="page1">
+            <div data-theme="e" data-role="header">
+                <h3>
+                    Electricty Meter monitor
+                </h3>
+            </div>
+            <div data-role="content">
+                    <ul data-role="listview" data-divider-theme="e">
+                    <li><label>Customer Id.</label><input type="text" /></li>
+                        <li><label>Customer Name.</label><input type="text" /></li>
+                        <li><label>Meter no.</label><input type="text"  /></li>
+                        <li><label>Meter reading</label><input type="text"  /></li>
+                        <li data-theme="c">
+                        <h3>Geolocation: <span id="geolocation">n/a</span></h3>
+                        <p>Current location</p>
+                    </li>
+                        <li data-theme="c">
+                        <li><label>Photograph</label></li>
+                        <img alt="" src="images/choosephoto.png" id="picture" /><button data-role="button" data-inline="true" onclick="showPictures();">
+                            Click Picture
+                        </button>
+                        <input type="button" value="Submit" onclick="submit()" />
+                        <p><span id="geolocationerror"></span></p>
+                    </li>
+                </ul>
+            </div>
+            <div data-theme="a" data-role="footer">
+            </div>
+
+            <script type="text/javascript">
+
+                function submit()
+                {
+
+                    alert("Data Submited")
+
+
+                }
+
+
+                function showPictures() {
+                    navigator.camera.getPicture(function (imageURI) {
+                        $('img#picture').attr('src', imageURI);
+                    }, function (error) {
+                        $('img#picture').replaceWith('<p>' + error + '</p>');
+                    }, { sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY, destinationType: navigator.camera.DestinationType.FILE_URI });
+                }
+
+                $(function () {
+                    var compassWatchID, geoWatchID;
+
+                    document.addEventListener("deviceready", function () {
+                        // Compass
+                        compassWatchID = navigator.compass.watchHeading(function (heading) {
+                            $('span#heading').html(heading.magneticHeading.toFixed(2) + '&#176;');
+                        }, function (error) {
+                            $('span#heading').text(error.code);
+                        }, { frequency: 3000 });
+
+                        // Geolocation
+                        geoWatchID = navigator.geolocation.watchPosition(function (position) {
+                            $('span#geolocation').text(position.coords.latitude.toFixed(2) + 'N, ' + position.coords.longitude.toFixed(2) + 'E');
+                        }, function (error) {
+                            $('span#geolocationerror').text(error.code + ': ' + error.message);
+                        }, { frequency: 3000 });
+                    });
+                } ());
+            </script>
+        </div>
+</body>
+</html>
+
